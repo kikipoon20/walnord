@@ -1,0 +1,1030 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MOOD STORE | Everyday Collection</title>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --black: #151515;
+      --gray: #777;
+      --line: #e9e9e9;
+      --white: #fff;
+    }
+
+    body {
+      font-family: Arial, "Noto Sans KR", sans-serif;
+      color: var(--black);
+      background: var(--white);
+    }
+
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; font: inherit; }
+    img { width: 100%; display: block; object-fit: cover; }
+
+    /* TOP BANNER */
+    .top-banner {
+      background: #171717;
+      color: white;
+      text-align: center;
+      padding: 11px;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    /* HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: white;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-inner {
+      max-width: 1600px;
+      margin: auto;
+      padding: 0 40px;
+      height: 85px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+
+    .logo {
+      font-size: 29px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      white-space: nowrap;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+    }
+
+    .nav a {
+      font-size: 13px;
+      font-weight: 600;
+      transition: opacity .2s;
+    }
+
+    .nav a:hover { opacity: .45; }
+
+    .header-icons {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .icon-btn {
+      border: 0;
+      background: none;
+      font-size: 21px;
+      position: relative;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: black;
+      color: white;
+      border-radius: 50%;
+      font-size: 10px;
+      width: 17px;
+      height: 17px;
+      display: grid;
+      place-items: center;
+    }
+
+    .menu-btn { display: none; }
+
+    /* SEARCH */
+    .search-box {
+      display: none;
+      padding: 20px 40px;
+      border-top: 1px solid var(--line);
+    }
+
+    .search-box.active { display: block; }
+
+    .search-box input {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ddd;
+      outline: none;
+      font-size: 14px;
+    }
+
+    /* HERO SLIDER */
+    .hero {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .slides {
+      display: flex;
+      transition: transform .65s ease;
+    }
+
+    .slide {
+      min-width: 100%;
+      height: min(680px, 48vw);
+      min-height: 380px;
+      position: relative;
+    }
+
+    .slide img {
+      height: 100%;
+      object-position: center 35%;
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        rgba(0,0,0,.48),
+        transparent 75%
+      );
+    }
+
+    .slide-content {
+      position: absolute;
+      z-index: 2;
+      left: 9%;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+    }
+
+    .slide-content small {
+      font-size: 14px;
+      letter-spacing: 4px;
+    }
+
+    .slide-content h1 {
+      font-size: clamp(36px, 5vw, 76px);
+      line-height: 1.1;
+      margin: 22px 0;
+      letter-spacing: -2px;
+    }
+
+    .slide-content p {
+      font-size: 15px;
+      margin-bottom: 32px;
+    }
+
+    .shop-btn {
+      display: inline-block;
+      background: white;
+      color: black;
+      padding: 15px 35px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .slider-controls {
+      position: absolute;
+      bottom: 30px;
+      right: 6%;
+      z-index: 5;
+      display: flex;
+      gap: 10px;
+    }
+
+    .slider-controls button {
+      background: rgba(255,255,255,.85);
+      border: none;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+    }
+
+    /* COMMON SECTION */
+    .section {
+      max-width: 1500px;
+      margin: auto;
+      padding: 100px 40px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      margin-bottom: 35px;
+    }
+
+    .section-heading h2 {
+      font-size: 34px;
+      letter-spacing: -1.5px;
+    }
+
+    .section-heading p {
+      color: var(--gray);
+      margin-top: 10px;
+      font-size: 13px;
+    }
+
+    .view-all {
+      font-size: 12px;
+      border-bottom: 1px solid black;
+      padding-bottom: 5px;
+    }
+
+    /* CATEGORY */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .category-card {
+      position: relative;
+      overflow: hidden;
+      background: #eee;
+      aspect-ratio: 3 / 4;
+    }
+
+    .category-card img {
+      height: 100%;
+      transition: transform .5s;
+    }
+
+    .category-card:hover img {
+      transform: scale(1.06);
+    }
+
+    .category-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        transparent 55%,
+        rgba(0,0,0,.4)
+      );
+    }
+
+    .category-card span {
+      position: absolute;
+      bottom: 25px;
+      left: 25px;
+      z-index: 2;
+      color: white;
+      font-size: 23px;
+      font-weight: bold;
+    }
+
+    /* PRODUCT */
+    .filter-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .filter-buttons button {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 10px 22px;
+      font-size: 12px;
+    }
+
+    .filter-buttons button.active {
+      background: black;
+      color: white;
+      border-color: black;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 35px 18px;
+    }
+
+    .product-card {
+      min-width: 0;
+    }
+
+    .product-image {
+      position: relative;
+      background: #f5f5f5;
+      overflow: hidden;
+      aspect-ratio: 3 / 4;
+    }
+
+    .product-image img {
+      height: 100%;
+      transition: transform .4s;
+    }
+
+    .product-card:hover .product-image img {
+      transform: scale(1.04);
+    }
+
+    .heart {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      border: none;
+      background: white;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      font-size: 20px;
+    }
+
+    .heart.active { color: red; }
+
+    .product-info {
+      padding: 15px 2px;
+    }
+
+    .product-info small {
+      color: #888;
+      font-size: 11px;
+    }
+
+    .product-info h3 {
+      font-size: 14px;
+      font-weight: 500;
+      margin: 9px 0;
+      line-height: 1.5;
+    }
+
+    .price {
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .discount {
+      color: #e53935;
+      margin-right: 8px;
+    }
+
+    .add-cart {
+      margin-top: 13px;
+      width: 100%;
+      border: 1px solid #ddd;
+      background: white;
+      padding: 11px;
+      font-size: 12px;
+    }
+
+    .add-cart:hover {
+      background: black;
+      color: white;
+    }
+
+    /* EDITORIAL */
+    .editorial {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #f1f0eb;
+      min-height: 500px;
+    }
+
+    .editorial img {
+      height: 100%;
+      max-height: 650px;
+    }
+
+    .editorial-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 10%;
+    }
+
+    .editorial-content small {
+      letter-spacing: 3px;
+    }
+
+    .editorial-content h2 {
+      font-size: clamp(35px, 4vw, 65px);
+      line-height: 1.15;
+      margin: 25px 0;
+    }
+
+    .editorial-content p {
+      font-size: 14px;
+      color: #666;
+      line-height: 1.9;
+      margin-bottom: 30px;
+    }
+
+    .editorial-content a {
+      border-bottom: 1px solid black;
+      padding-bottom: 8px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #f7f7f7;
+      padding: 65px 40px;
+      margin-top: 60px;
+    }
+
+    .footer-inner {
+      max-width: 1500px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 35px;
+    }
+
+    .footer-logo {
+      font-size: 27px;
+      font-weight: 900;
+      margin-bottom: 20px;
+    }
+
+    footer p {
+      font-size: 12px;
+      color: #777;
+      line-height: 2;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 30px;
+      font-size: 12px;
+    }
+
+    /* TABLET */
+    @media (max-width: 1024px) {
+      .header-inner {
+        padding: 0 25px;
+      }
+
+      .nav { gap: 15px; }
+
+      .nav a { font-size: 11px; }
+
+      .section { padding: 75px 25px; }
+
+      .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* MOBILE */
+    @media (max-width: 767px) {
+      .top-banner {
+        font-size: 10px;
+        padding: 9px;
+      }
+
+      .header-inner {
+        height: 62px;
+        padding: 0 18px;
+      }
+
+      .logo { font-size: 23px; }
+
+      .menu-btn { display: block; }
+
+      .nav {
+        display: none;
+        position: absolute;
+        top: 62px;
+        left: 0;
+        right: 0;
+        background: white;
+        padding: 25px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 25px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .nav.active { display: flex; }
+
+      .nav a { font-size: 16px; }
+
+      .header-icons { gap: 15px; }
+
+      .icon-btn { font-size: 20px; }
+
+      .search-box { padding: 15px; }
+
+      .slide {
+        height: 560px;
+        min-height: 0;
+      }
+
+      .slide img {
+        object-position: center;
+      }
+
+      .slide::after {
+        background: linear-gradient(
+          transparent 25%,
+          rgba(0,0,0,.6)
+        );
+      }
+
+      .slide-content {
+        left: 7%;
+        right: 7%;
+        top: auto;
+        bottom: 80px;
+        transform: none;
+      }
+
+      .slide-content small {
+        font-size: 11px;
+        letter-spacing: 2px;
+      }
+
+      .slide-content h1 {
+        font-size: 43px;
+        margin: 15px 0;
+      }
+
+      .slide-content p {
+        font-size: 12px;
+        line-height: 1.7;
+      }
+
+      .shop-btn {
+        padding: 13px 25px;
+      }
+
+      .slider-controls {
+        right: 20px;
+        bottom: 20px;
+      }
+
+      .section {
+        padding: 65px 16px;
+      }
+
+      .section-heading h2 {
+        font-size: 26px;
+      }
+
+      .section-heading p {
+        font-size: 11px;
+      }
+
+      .category-grid {
+        gap: 10px;
+      }
+
+      .category-card span {
+        font-size: 17px;
+        bottom: 15px;
+        left: 13px;
+      }
+
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px 10px;
+      }
+
+      .product-info h3 {
+        font-size: 12px;
+      }
+
+      .price { font-size: 14px; }
+
+      .filter-buttons {
+        gap: 8px;
+      }
+
+      .filter-buttons button {
+        padding: 9px 13px;
+        font-size: 11px;
+      }
+
+      .editorial {
+        grid-template-columns: 1fr;
+      }
+
+      .editorial img {
+        height: 380px;
+      }
+
+      .editorial-content {
+        padding: 55px 25px;
+      }
+
+      .editorial-content h2 {
+        font-size: 40px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+      }
+
+      footer { padding: 45px 20px; }
+
+      .footer-links {
+        flex-wrap: wrap;
+        gap: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- TOP BANNER -->
+  <div class="top-banner">
+    NEW SEASON COLLECTION · DISCOVER YOUR STYLE
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+
+      <button class="icon-btn menu-btn"
+        onclick="toggleMenu()"
+        aria-label="메뉴 열기">☰</button>
+
+      <a href="#" class="logo">MOOD.</a>
+
+      <nav class="nav" id="nav">
+        <a href="#new">NEW</a>
+        <a href="#category">WOMEN</a>
+        <a href="#category">MEN</a>
+        <a href="#category">LIFESTYLE</a>
+        <a href="#best">BEST</a>
+        <a href="#editorial">EDITORIAL</a>
+      </nav>
+
+      <div class="header-icons">
+        <button class="icon-btn"
+          onclick="toggleSearch()"
+          aria-label="검색">⌕</button>
+
+        <button class="icon-btn"
+          onclick="showCart()"
+          aria-label="장바구니">
+          ♧
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="search-box" id="searchBox">
+      <input type="search"
+        id="searchInput"
+        placeholder="상품명을 검색하세요"
+        oninput="searchProducts()">
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" id="new">
+    <div class="slides" id="slides">
+
+      <div class="slide">
+        <img
+          src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1800&auto=format&fit=crop"
+          alt="패션 컬렉션">
+        <div class="slide-content">
+          <small>2026 WINTER COLLECTION</small>
+          <h1>THE NEW<br>SEASON</h1>
+          <p>일상에 자연스럽게 스며드는 새로운 스타일</p>
+          <a href="#best" class="shop-btn">SHOP NOW →</a>
+        </div>
+      </div>
+
+      <div class="slide">
+        <img
+          src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1800&auto=format&fit=crop"
+          alt="스타일 컬렉션">
+        <div class="slide-content">
+          <small>EVERYDAY ESSENTIALS</small>
+          <h1>YOUR<br>EVERYDAY</h1>
+          <p>매일 입고 싶은 편안하고 감각적인 옷</p>
+          <a href="#category" class="shop-btn">EXPLORE →</a>
+        </div>
+      </div>
+
+      <div class="slide">
+        <img
+          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1800&auto=format&fit=crop"
+          alt="시즌 스타일">
+        <div class="slide-content">
+          <small>CURATED FOR YOU</small>
+          <h1>FIND YOUR<br>MOOD</h1>
+          <p>나만의 무드를 완성하는 스타일 셀렉션</p>
+          <a href="#best" class="shop-btn">DISCOVER →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="slider-controls">
+      <button onclick="moveSlide(-1)" aria-label="이전 배너">‹</button>
+      <button onclick="moveSlide(1)" aria-label="다음 배너">›</button>
+    </div>
+  </section>
+
+  <!-- CATEGORY -->
+  <section class="section" id="category">
+    <div class="section-heading">
+      <div>
+        <h2>Shop by Category</h2>
+        <p>당신의 취향을 위한 카테고리</p>
+      </div>
+      <a href="#best" class="view-all">VIEW ALL →</a>
+    </div>
+
+    <div class="category-grid">
+      <a href="#best" class="category-card">
+        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=700&auto=format&fit=crop" alt="여성 의류">
+        <span>WOMEN →</span>
+      </a>
+
+      <a href="#best" class="category-card">
+        <img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?w=700&auto=format&fit=crop" alt="남성 의류">
+        <span>MEN →</span>
+      </a>
+
+      <a href="#best" class="category-card">
+        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=700&auto=format&fit=crop" alt="액세서리">
+        <span>ACCESSORIES →</span>
+      </a>
+
+      <a href="#best" class="category-card">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&auto=format&fit=crop" alt="컬렉션">
+        <span>COLLECTION →</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- BEST PRODUCTS -->
+  <section class="section" id="best">
+    <div class="section-heading">
+      <div>
+        <h2>Weekly Best</h2>
+        <p>이번 주 가장 사랑받는 아이템</p>
+      </div>
+      <a href="#best" class="view-all">VIEW ALL →</a>
+    </div>
+
+    <div class="filter-buttons">
+      <button class="active" onclick="filterProducts('all', this)">ALL</button>
+      <button onclick="filterProducts('women', this)">WOMEN</button>
+      <button onclick="filterProducts('men', this)">MEN</button>
+      <button onclick="filterProducts('acc', this)">ACC</button>
+    </div>
+
+    <div class="product-grid" id="productGrid"></div>
+  </section>
+
+  <!-- EDITORIAL -->
+  <section class="editorial" id="editorial">
+    <img
+      src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=1200&auto=format&fit=crop"
+      alt="브랜드 에디토리얼">
+
+    <div class="editorial-content">
+      <small>MOOD EDITORIAL</small>
+      <h2>Style is<br>Everywhere.</h2>
+      <p>
+        특별한 순간뿐 아니라 평범한 하루에도.<br>
+        당신의 일상을 더욱 아름답게 만드는<br>
+        감각적인 스타일을 제안합니다.
+      </p>
+      <a href="#category">EXPLORE COLLECTION →</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">MOOD.</div>
+        <p>
+          Everyday Style, Everyday Mood.<br>
+          본 페이지는 반응형 쇼핑몰 디자인 예제입니다.<br>
+          © 2026 MOOD STORE. All Rights Reserved.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#new">HOME</a>
+        <a href="#category">CATEGORY</a>
+        <a href="#best">BEST</a>
+        <a href="#editorial">ABOUT</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // HERO SLIDER
+    let currentSlide = 0;
+    const slides = document.querySelectorAll(".slide");
+    const slideContainer = document.getElementById("slides");
+
+    function moveSlide(direction) {
+      currentSlide =
+        (currentSlide + direction + slides.length) % slides.length;
+
+      slideContainer.style.transform =
+        `translateX(-${currentSlide * 100}%)`;
+    }
+
+    setInterval(() => moveSlide(1), 5000);
+
+    // MOBILE MENU
+    function toggleMenu() {
+      document.getElementById("nav").classList.toggle("active");
+    }
+
+    document.querySelectorAll(".nav a").forEach(link => {
+      link.addEventListener("click", () => {
+        document.getElementById("nav").classList.remove("active");
+      });
+    });
+
+    // SEARCH
+    function toggleSearch() {
+      const box = document.getElementById("searchBox");
+      box.classList.toggle("active");
+
+      if (box.classList.contains("active")) {
+        document.getElementById("searchInput").focus();
+      }
+    }
+
+    // SAMPLE PRODUCTS
+    const products = [
+      {
+        name: "베이직 오버핏 니트",
+        category: "women",
+        price: 39900,
+        discount: 20,
+        image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=650&auto=format&fit=crop"
+      },
+      {
+        name: "클래식 데일리 셔츠",
+        category: "men",
+        price: 45900,
+        discount: 10,
+        image: "https://images.unsplash.com/photo-1598032895397-b9472444bf93?w=650&auto=format&fit=crop"
+      },
+      {
+        name: "모던 데일리 스니커즈",
+        category: "acc",
+        price: 59000,
+        discount: 15,
+        image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=650&auto=format&fit=crop"
+      },
+      {
+        name: "미니멀 데일리 백",
+        category: "acc",
+        price: 49000,
+        discount: 0,
+        image: "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=650&auto=format&fit=crop"
+      },
+      {
+        name: "소프트 데일리 가디건",
+        category: "women",
+        price: 52900,
+        discount: 20,
+        image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=650&auto=format&fit=crop"
+      },
+      {
+        name: "베이직 코튼 티셔츠",
+        category: "men",
+        price: 29900,
+        discount: 0,
+        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=650&auto=format&fit=crop"
+      },
+      {
+        name: "클래식 데일리 슈즈",
+        category: "acc",
+        price: 69000,
+        discount: 10,
+        image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=650&auto=format&fit=crop"
+      },
+      {
+        name: "시즌 컬렉션 아우터",
+        category: "women",
+        price: 89900,
+        discount: 25,
+        image: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=650&auto=format&fit=crop"
+      }
+    ];
+
+    let cart = 0;
+    let currentCategory = "all";
+
+    function renderProducts(items) {
+      const grid = document.getElementById("productGrid");
+      grid.innerHTML = "";
+
+      if (items.length === 0) {
+        grid.innerHTML = "<p>검색 결과가 없습니다.</p>";
+        return;
+      }
+
+      items.forEach(product => {
+        const finalPrice = Math.round(
+          product.price * (1 - product.discount / 100) / 100
+        ) * 100;
+
+        const card = document.createElement("div");
+        card.className = "product-card";
+
+        card.innerHTML = `
+          <div class="product-image">
+            <img src="${product.image}" alt="${product.name}" loading="lazy">
+            <button class="heart" aria-label="찜하기">♡</button>
+          </div>
+
+          <div class="product-info">
+            <small>MOOD STORE</small>
+            <h3>${product.name}</h3>
+            <div class="price">
+              ${product.discount > 0
+                ? `<span class="discount">${product.discount}%</span>`
+                : ""}
+              ${finalPrice.toLocaleString()}원
+            </div>
+            <button class="add-cart">장바구니 담기 +</button>
+          </div>
+        `;
+
+        card.querySelector(".heart").addEventListener("click", e => {
+          e.currentTarget.classList.toggle("active");
+          e.currentTarget.textContent =
+            e.currentTarget.classList.contains("active") ? "♥" : "♡";
+        });
+
+        card.querySelector(".add-cart").addEventListener("click", () => {
+          cart++;
+          document.getElementById("cartCount").textContent = cart;
+          alert("장바구니에 담았습니다.");
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    function updateProducts() {
+      const query = document.getElementById("searchInput")
+        .value.trim().toLowerCase();
+
+      const filtered = products.filter(product => {
+        const categoryMatch =
+          currentCategory === "all" ||
+          product.category === currentCategory;
+
+        const searchMatch =
+          product.name.toLowerCase().includes(query);
+
+        return categoryMatch && searchMatch;
+      });
+
+      renderProducts(filtered);
+    }
+
+    function filterProducts(category, button) {
+      currentCategory = category;
+
+      document.querySelectorAll(".filter-buttons button")
+        .forEach(btn => btn.classList.remove("active"));
+
+      button.classList.add("active");
+      updateProducts();
+    }
+
+    function searchProducts() {
+      updateProducts();
+      document.getElementById("best").scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+
+    function showCart() {
+      alert(`장바구니에 ${cart}개의 상품이 담겨 있습니다.`);
+    }
+
+    renderProducts(products);
+  </script>
+
+</body>
+</html>
