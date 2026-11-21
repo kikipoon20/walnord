@@ -2,1029 +2,757 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MOOD STORE | Everyday Collection</title>
-
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --black: #151515;
-      --gray: #777;
-      --line: #e9e9e9;
-      --white: #fff;
-    }
-
-    body {
-      font-family: Arial, "Noto Sans KR", sans-serif;
-      color: var(--black);
-      background: var(--white);
-    }
-
-    a { text-decoration: none; color: inherit; }
-    button { cursor: pointer; font: inherit; }
-    img { width: 100%; display: block; object-fit: cover; }
-
-    /* TOP BANNER */
-    .top-banner {
-      background: #171717;
-      color: white;
-      text-align: center;
-      padding: 11px;
-      font-size: 12px;
-      letter-spacing: 1px;
-    }
-
-    /* HEADER */
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: white;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .header-inner {
-      max-width: 1600px;
-      margin: auto;
-      padding: 0 40px;
-      height: 85px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 30px;
-    }
-
-    .logo {
-      font-size: 29px;
-      font-weight: 900;
-      letter-spacing: -2px;
-      white-space: nowrap;
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-    }
-
-    .nav a {
-      font-size: 13px;
-      font-weight: 600;
-      transition: opacity .2s;
-    }
-
-    .nav a:hover { opacity: .45; }
-
-    .header-icons {
-      display: flex;
-      gap: 20px;
-      align-items: center;
-    }
-
-    .icon-btn {
-      border: 0;
-      background: none;
-      font-size: 21px;
-      position: relative;
-    }
-
-    .cart-count {
-      position: absolute;
-      top: -8px;
-      right: -10px;
-      background: black;
-      color: white;
-      border-radius: 50%;
-      font-size: 10px;
-      width: 17px;
-      height: 17px;
-      display: grid;
-      place-items: center;
-    }
-
-    .menu-btn { display: none; }
-
-    /* SEARCH */
-    .search-box {
-      display: none;
-      padding: 20px 40px;
-      border-top: 1px solid var(--line);
-    }
-
-    .search-box.active { display: block; }
-
-    .search-box input {
-      width: 100%;
-      padding: 14px;
-      border: 1px solid #ddd;
-      outline: none;
-      font-size: 14px;
-    }
-
-    /* HERO SLIDER */
-    .hero {
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .slides {
-      display: flex;
-      transition: transform .65s ease;
-    }
-
-    .slide {
-      min-width: 100%;
-      height: min(680px, 48vw);
-      min-height: 380px;
-      position: relative;
-    }
-
-    .slide img {
-      height: 100%;
-      object-position: center 35%;
-    }
-
-    .slide::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        90deg,
-        rgba(0,0,0,.48),
-        transparent 75%
-      );
-    }
-
-    .slide-content {
-      position: absolute;
-      z-index: 2;
-      left: 9%;
-      top: 50%;
-      transform: translateY(-50%);
-      color: white;
-    }
-
-    .slide-content small {
-      font-size: 14px;
-      letter-spacing: 4px;
-    }
-
-    .slide-content h1 {
-      font-size: clamp(36px, 5vw, 76px);
-      line-height: 1.1;
-      margin: 22px 0;
-      letter-spacing: -2px;
-    }
-
-    .slide-content p {
-      font-size: 15px;
-      margin-bottom: 32px;
-    }
-
-    .shop-btn {
-      display: inline-block;
-      background: white;
-      color: black;
-      padding: 15px 35px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .slider-controls {
-      position: absolute;
-      bottom: 30px;
-      right: 6%;
-      z-index: 5;
-      display: flex;
-      gap: 10px;
-    }
-
-    .slider-controls button {
-      background: rgba(255,255,255,.85);
-      border: none;
-      width: 40px;
-      height: 40px;
-      font-size: 18px;
-    }
-
-    /* COMMON SECTION */
-    .section {
-      max-width: 1500px;
-      margin: auto;
-      padding: 100px 40px;
-    }
-
-    .section-heading {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      margin-bottom: 35px;
-    }
-
-    .section-heading h2 {
-      font-size: 34px;
-      letter-spacing: -1.5px;
-    }
-
-    .section-heading p {
-      color: var(--gray);
-      margin-top: 10px;
-      font-size: 13px;
-    }
-
-    .view-all {
-      font-size: 12px;
-      border-bottom: 1px solid black;
-      padding-bottom: 5px;
-    }
-
-    /* CATEGORY */
-    .category-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .category-card {
-      position: relative;
-      overflow: hidden;
-      background: #eee;
-      aspect-ratio: 3 / 4;
-    }
-
-    .category-card img {
-      height: 100%;
-      transition: transform .5s;
-    }
-
-    .category-card:hover img {
-      transform: scale(1.06);
-    }
-
-    .category-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        transparent 55%,
-        rgba(0,0,0,.4)
-      );
-    }
-
-    .category-card span {
-      position: absolute;
-      bottom: 25px;
-      left: 25px;
-      z-index: 2;
-      color: white;
-      font-size: 23px;
-      font-weight: bold;
-    }
-
-    /* PRODUCT */
-    .filter-buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 30px;
-    }
-
-    .filter-buttons button {
-      background: white;
-      border: 1px solid #ddd;
-      padding: 10px 22px;
-      font-size: 12px;
-    }
-
-    .filter-buttons button.active {
-      background: black;
-      color: white;
-      border-color: black;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 35px 18px;
-    }
-
-    .product-card {
-      min-width: 0;
-    }
-
-    .product-image {
-      position: relative;
-      background: #f5f5f5;
-      overflow: hidden;
-      aspect-ratio: 3 / 4;
-    }
-
-    .product-image img {
-      height: 100%;
-      transition: transform .4s;
-    }
-
-    .product-card:hover .product-image img {
-      transform: scale(1.04);
-    }
-
-    .heart {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      border: none;
-      background: white;
-      width: 35px;
-      height: 35px;
-      border-radius: 50%;
-      font-size: 20px;
-    }
-
-    .heart.active { color: red; }
-
-    .product-info {
-      padding: 15px 2px;
-    }
-
-    .product-info small {
-      color: #888;
-      font-size: 11px;
-    }
-
-    .product-info h3 {
-      font-size: 14px;
-      font-weight: 500;
-      margin: 9px 0;
-      line-height: 1.5;
-    }
-
-    .price {
-      font-weight: bold;
-      font-size: 16px;
-    }
-
-    .discount {
-      color: #e53935;
-      margin-right: 8px;
-    }
-
-    .add-cart {
-      margin-top: 13px;
-      width: 100%;
-      border: 1px solid #ddd;
-      background: white;
-      padding: 11px;
-      font-size: 12px;
-    }
-
-    .add-cart:hover {
-      background: black;
-      color: white;
-    }
-
-    /* EDITORIAL */
-    .editorial {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      background: #f1f0eb;
-      min-height: 500px;
-    }
-
-    .editorial img {
-      height: 100%;
-      max-height: 650px;
-    }
-
-    .editorial-content {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 10%;
-    }
-
-    .editorial-content small {
-      letter-spacing: 3px;
-    }
-
-    .editorial-content h2 {
-      font-size: clamp(35px, 4vw, 65px);
-      line-height: 1.15;
-      margin: 25px 0;
-    }
-
-    .editorial-content p {
-      font-size: 14px;
-      color: #666;
-      line-height: 1.9;
-      margin-bottom: 30px;
-    }
-
-    .editorial-content a {
-      border-bottom: 1px solid black;
-      padding-bottom: 8px;
-      font-size: 13px;
-      font-weight: bold;
-    }
-
-    /* FOOTER */
-    footer {
-      background: #f7f7f7;
-      padding: 65px 40px;
-      margin-top: 60px;
-    }
-
-    .footer-inner {
-      max-width: 1500px;
-      margin: auto;
-      display: flex;
-      justify-content: space-between;
-      gap: 35px;
-    }
-
-    .footer-logo {
-      font-size: 27px;
-      font-weight: 900;
-      margin-bottom: 20px;
-    }
-
-    footer p {
-      font-size: 12px;
-      color: #777;
-      line-height: 2;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 30px;
-      font-size: 12px;
-    }
-
-    /* TABLET */
-    @media (max-width: 1024px) {
-      .header-inner {
-        padding: 0 25px;
-      }
-
-      .nav { gap: 15px; }
-
-      .nav a { font-size: 11px; }
-
-      .section { padding: 75px 25px; }
-
-      .product-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
-      .category-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
-    /* MOBILE */
-    @media (max-width: 767px) {
-      .top-banner {
-        font-size: 10px;
-        padding: 9px;
-      }
-
-      .header-inner {
-        height: 62px;
-        padding: 0 18px;
-      }
-
-      .logo { font-size: 23px; }
-
-      .menu-btn { display: block; }
-
-      .nav {
-        display: none;
-        position: absolute;
-        top: 62px;
-        left: 0;
-        right: 0;
-        background: white;
-        padding: 25px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 25px;
-        border-bottom: 1px solid #ddd;
-      }
-
-      .nav.active { display: flex; }
-
-      .nav a { font-size: 16px; }
-
-      .header-icons { gap: 15px; }
-
-      .icon-btn { font-size: 20px; }
-
-      .search-box { padding: 15px; }
-
-      .slide {
-        height: 560px;
-        min-height: 0;
-      }
-
-      .slide img {
-        object-position: center;
-      }
-
-      .slide::after {
-        background: linear-gradient(
-          transparent 25%,
-          rgba(0,0,0,.6)
-        );
-      }
-
-      .slide-content {
-        left: 7%;
-        right: 7%;
-        top: auto;
-        bottom: 80px;
-        transform: none;
-      }
-
-      .slide-content small {
-        font-size: 11px;
-        letter-spacing: 2px;
-      }
-
-      .slide-content h1 {
-        font-size: 43px;
-        margin: 15px 0;
-      }
-
-      .slide-content p {
-        font-size: 12px;
-        line-height: 1.7;
-      }
-
-      .shop-btn {
-        padding: 13px 25px;
-      }
-
-      .slider-controls {
-        right: 20px;
-        bottom: 20px;
-      }
-
-      .section {
-        padding: 65px 16px;
-      }
-
-      .section-heading h2 {
-        font-size: 26px;
-      }
-
-      .section-heading p {
-        font-size: 11px;
-      }
-
-      .category-grid {
-        gap: 10px;
-      }
-
-      .category-card span {
-        font-size: 17px;
-        bottom: 15px;
-        left: 13px;
-      }
-
-      .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 25px 10px;
-      }
-
-      .product-info h3 {
-        font-size: 12px;
-      }
-
-      .price { font-size: 14px; }
-
-      .filter-buttons {
-        gap: 8px;
-      }
-
-      .filter-buttons button {
-        padding: 9px 13px;
-        font-size: 11px;
-      }
-
-      .editorial {
-        grid-template-columns: 1fr;
-      }
-
-      .editorial img {
-        height: 380px;
-      }
-
-      .editorial-content {
-        padding: 55px 25px;
-      }
-
-      .editorial-content h2 {
-        font-size: 40px;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-      }
-
-      footer { padding: 45px 20px; }
-
-      .footer-links {
-        flex-wrap: wrap;
-        gap: 18px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WALNORD | Official Store</title>
+<meta name="description" content="WALNORD 공식 온라인 스토어">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&display=swap');
+
+:root {
+  --text:#171717;
+  --sub:#888;
+  --line:#eaeaea;
+  --bg:#fff;
+  --soft:#f6f5f2;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:"DM Sans","Noto Sans KR",sans-serif;
+  color:var(--text);
+  background:var(--bg);
+}
+body.lock{overflow:hidden}
+a{text-decoration:none;color:inherit}
+button,input{font:inherit}
+button{cursor:pointer}
+img{display:block;width:100%;object-fit:cover}
+button:focus-visible,a:focus-visible,input:focus-visible{
+  outline:2px solid #555;outline-offset:3px;
+}
+.announcement{
+  background:#171717;color:#fff;text-align:center;
+  font-size:11px;letter-spacing:1px;padding:11px;
+}
+header{
+  position:sticky;top:0;z-index:100;
+  background:#fff;border-bottom:1px solid var(--line);
+}
+.header-inner{
+  max-width:1700px;margin:auto;height:82px;
+  padding:0 4%;display:flex;align-items:center;
+  justify-content:space-between;gap:30px;
+}
+.logo{
+  font-size:29px;font-weight:700;
+  letter-spacing:-1.7px;white-space:nowrap;
+}
+.nav{display:flex;gap:32px;align-items:center}
+.nav a{font-size:12px;font-weight:600;letter-spacing:.4px}
+.nav a:hover{opacity:.5}
+.header-actions{display:flex;align-items:center;gap:19px}
+.icon-btn{
+  border:0;background:none;position:relative;
+  display:grid;place-items:center;
+  width:25px;height:30px;color:#171717;
+}
+.icon-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6}
+.count{
+  position:absolute;right:-9px;top:-5px;
+  font-size:9px;background:#171717;color:#fff;
+  border-radius:50%;min-width:16px;height:16px;
+  display:grid;place-items:center;
+}
+.menu-toggle{display:none}
+.search-panel{
+  display:none;border-top:1px solid var(--line);
+  padding:20px 5%;background:white;
+}
+.search-panel.open{display:block}
+.search-panel input{
+  width:100%;padding:15px;border:1px solid #ddd;
+  outline:none;font-size:14px;
+}
+
+/* MAIN SLIDER */
+.hero{position:relative;overflow:hidden}
+.hero-track{display:flex;transition:transform .65s ease}
+.hero-slide{
+  flex:0 0 100%;height:min(750px,52vw);
+  min-height:400px;position:relative;
+}
+.hero-slide picture,.hero-slide img{display:block;width:100%;height:100%}
+.hero-slide img{object-fit:cover}
+.hero-slide:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(90deg,rgba(0,0,0,.42),transparent 78%);
+  pointer-events:none;
+}
+.hero-content{
+  position:absolute;left:9%;top:50%;
+  transform:translateY(-50%);z-index:2;color:#fff;
+}
+.hero-content .eyebrow{
+  font-size:12px;letter-spacing:3px;font-weight:500;
+}
+.hero-content h1{
+  font-size:clamp(42px,6.4vw,100px);
+  line-height:1.04;letter-spacing:-3px;
+  margin:23px 0;font-weight:600;
+}
+.hero-content p{font-size:15px;line-height:1.8;margin-bottom:30px}
+.light-button{
+  display:inline-block;background:#fff;color:#171717;
+  padding:15px 32px;font-size:12px;font-weight:700;
+  letter-spacing:1px;
+}
+.hero-controls{
+  position:absolute;right:5%;bottom:35px;
+  z-index:5;display:flex;align-items:center;gap:16px;
+  color:#fff;
+}
+.hero-controls button{
+  border:1px solid rgba(255,255,255,.6);
+  background:transparent;color:#fff;
+  width:40px;height:40px;font-size:22px;
+}
+.hero-counter{font-size:12px;letter-spacing:2px}
+
+/* GENERAL */
+.container{max-width:1600px;margin:auto;padding:100px 4%}
+.section-title{text-align:center;margin-bottom:42px}
+.section-title small{
+  font-size:11px;letter-spacing:3px;color:#777;
+}
+.section-title h2{
+  font-size:clamp(27px,3vw,43px);
+  font-weight:600;letter-spacing:-1.5px;margin:12px 0;
+}
+.section-title p{font-size:13px;color:#888}
+.section-link{
+  display:block;text-align:center;margin-top:42px;
+  font-size:12px;letter-spacing:1px;
+  text-decoration:underline;text-underline-offset:6px;
+}
+
+/* CATEGORY */
+.category-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:18px;
+}
+.category-item{position:relative;overflow:hidden}
+.category-item img{
+  aspect-ratio:4/5;transition:transform .5s;
+}
+.category-item:hover img{transform:scale(1.04)}
+.category-label{
+  position:absolute;bottom:30px;left:30px;
+  color:#fff;z-index:2;
+}
+.category-label strong{font-size:28px;font-weight:600}
+.category-label span{display:block;font-size:12px;margin-top:8px}
+.category-item:after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(transparent 65%,rgba(0,0,0,.38));
+  pointer-events:none;
+}
+
+/* PRODUCT */
+.product-tabs{
+  display:flex;justify-content:center;flex-wrap:wrap;
+  gap:25px;margin-bottom:35px;
+}
+.product-tabs button{
+  border:0;background:none;font-size:13px;
+  color:#999;padding:8px 0;
+}
+.product-tabs button.active{
+  color:#171717;border-bottom:2px solid #171717;
+}
+.product-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:35px 18px;
+}
+.product-card{min-width:0}
+.product-image{
+  position:relative;overflow:hidden;background:#f4f4f4;
+}
+.product-image img{aspect-ratio:3/4;transition:transform .4s}
+.product-card:hover img{transform:scale(1.035)}
+.product-badge{
+  position:absolute;top:12px;left:12px;
+  background:#fff;padding:7px 10px;
+  font-size:10px;letter-spacing:.5px;
+}
+.wish{
+  position:absolute;right:12px;top:12px;
+  border:0;background:#fff;border-radius:50%;
+  width:34px;height:34px;font-size:21px;
+}
+.wish.active{color:#e23b47}
+.product-detail{padding:17px 2px}
+.product-detail small{font-size:10px;color:#999}
+.product-detail h3{
+  font-size:13px;font-weight:500;line-height:1.6;
+  margin:8px 0 11px;
+}
+.price{font-size:15px;font-weight:700}
+.discount{color:#e34242;margin-right:8px}
+.old-price{
+  font-size:11px;color:#aaa;text-decoration:line-through;
+  margin-left:8px;font-weight:400;
+}
+.cart-add{
+  width:100%;background:#fff;border:1px solid #ddd;
+  padding:11px;margin-top:15px;font-size:11px;
+}
+.cart-add:hover{background:#171717;color:#fff}
+
+/* WIDE BANNER */
+.wide-banner{position:relative;min-height:450px}
+.wide-banner img{height:480px}
+.wide-banner:after{
+  content:"";position:absolute;inset:0;
+  background:rgba(0,0,0,.22);pointer-events:none;
+}
+.wide-content{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  z-index:2;text-align:center;color:#fff;width:90%;
+}
+.wide-content small{font-size:12px;letter-spacing:3px}
+.wide-content h2{
+  font-size:clamp(36px,5vw,70px);
+  margin:20px 0;font-weight:600;
+}
+.wide-content p{font-size:14px;margin-bottom:28px}
+
+/* EDITORIAL */
+.editorial{
+  display:grid;grid-template-columns:1fr 1fr;
+  background:var(--soft);
+}
+.editorial img{height:600px}
+.editorial-text{
+  display:flex;flex-direction:column;
+  align-items:flex-start;justify-content:center;
+  padding:12%;
+}
+.editorial-text small{font-size:11px;letter-spacing:3px}
+.editorial-text h2{
+  font-size:clamp(35px,4vw,65px);
+  line-height:1.2;margin:25px 0;
+}
+.editorial-text p{
+  font-size:14px;color:#666;line-height:2;
+  margin-bottom:28px;
+}
+.editorial-text a{
+  font-size:12px;border-bottom:1px solid #171717;
+  padding-bottom:8px;
+}
+
+/* FOOTER */
+footer{background:#f7f7f7;padding:75px 5% 35px}
+.footer-inner{
+  max-width:1600px;margin:auto;
+  display:grid;grid-template-columns:2fr 1fr 1fr;
+  gap:50px;
+}
+.footer-brand{font-size:27px;font-weight:700;letter-spacing:-1px}
+.footer-inner h4{font-size:12px;margin-bottom:20px}
+.footer-inner p,.footer-inner a{
+  font-size:12px;color:#777;line-height:2.2;
+}
+.footer-inner a{display:block}
+.copyright{
+  max-width:1600px;margin:60px auto 0;
+  border-top:1px solid #ddd;padding-top:25px;
+  color:#aaa;font-size:11px;
+}
+.top-btn{
+  position:fixed;bottom:25px;right:25px;
+  width:43px;height:43px;border:1px solid #ddd;
+  background:#fff;z-index:90;font-size:18px;
+}
+
+/* MOBILE NAV */
+.mobile-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.35);z-index:199;
+}
+.mobile-overlay.open{display:block}
+.mobile-menu{
+  position:fixed;top:0;left:0;bottom:0;
+  width:min(340px,85vw);background:#fff;
+  z-index:200;padding:30px 25px;
+  transform:translateX(-105%);
+  transition:transform .3s;overflow-y:auto;
+}
+.mobile-menu.open{transform:translateX(0)}
+.mobile-menu-head{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:40px;
+}
+.mobile-menu-head strong{font-size:23px}
+.mobile-menu-head button{
+  background:none;border:0;font-size:28px;
+}
+.mobile-menu a{
+  display:block;padding:18px 0;
+  border-bottom:1px solid #eee;
+  font-size:15px;font-weight:600;
+}
+
+/* TABLET */
+@media(max-width:1100px){
+  .header-inner{gap:15px}
+  .nav{gap:16px}
+  .nav a{font-size:11px}
+  .product-grid{grid-template-columns:repeat(3,1fr)}
+}
+
+/* MOBILE */
+@media(max-width:767px){
+  .announcement{font-size:10px;padding:9px}
+  .header-inner{height:62px;padding:0 17px}
+  .logo{font-size:23px}
+  .nav{display:none}
+  .menu-toggle{display:grid}
+  .header-actions{gap:14px}
+  .hero-slide{height:580px;min-height:0}
+  .hero-slide:after{
+    background:linear-gradient(transparent 30%,rgba(0,0,0,.55));
+  }
+  .hero-content{
+    top:auto;bottom:95px;left:7%;right:7%;
+    transform:none;
+  }
+  .hero-content .eyebrow{font-size:10px}
+  .hero-content h1{
+    font-size:48px;letter-spacing:-1.5px;margin:17px 0;
+  }
+  .hero-content p{font-size:12px}
+  .light-button{padding:13px 24px}
+  .hero-controls{right:20px;bottom:25px}
+  .hero-controls button{width:33px;height:33px}
+  .container{padding:70px 16px}
+  .section-title{margin-bottom:30px}
+  .section-title h2{font-size:29px}
+  .category-grid{grid-template-columns:repeat(2,1fr);gap:10px}
+  .category-item:first-child{grid-column:span 2}
+  .category-item:first-child img{aspect-ratio:1.4}
+  .category-label{bottom:17px;left:15px}
+  .category-label strong{font-size:20px}
+  .category-label span{font-size:10px}
+  .product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:25px 10px}
+  .product-tabs{gap:17px}
+  .product-tabs button{font-size:11px}
+  .product-detail h3{font-size:12px}
+  .price{font-size:13px}
+  .old-price{display:block;margin:5px 0 0}
+  .wide-banner{min-height:350px}
+  .wide-banner img{height:350px}
+  .wide-content h2{font-size:38px}
+  .wide-content p{font-size:12px}
+  .editorial{grid-template-columns:1fr}
+  .editorial img{height:400px}
+  .editorial-text{padding:60px 25px}
+  .editorial-text h2{font-size:42px}
+  footer{padding:55px 22px 25px}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:35px 15px}
+  .footer-inner>div:first-child{grid-column:span 2}
+  .copyright{margin-top:45px}
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{transition:none!important}
+}
+</style>
 </head>
 
 <body>
+<div class="announcement">
+  WELCOME TO WALNORD — NEW COLLECTION
+</div>
 
-  <!-- TOP BANNER -->
-  <div class="top-banner">
-    NEW SEASON COLLECTION · DISCOVER YOUR STYLE
+<header>
+  <div class="header-inner">
+    <button class="icon-btn menu-toggle"
+      onclick="openMenu()" aria-label="메뉴 열기">
+      <svg viewBox="0 0 24 24">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
+
+    <a href="#" class="logo">WALNORD</a>
+
+    <nav class="nav">
+      <a href="#new">NEW</a>
+      <a href="#category">COLLECTION</a>
+      <a href="#best">BEST</a>
+      <a href="#products">SHOP</a>
+      <a href="#editorial">ABOUT</a>
+    </nav>
+
+    <div class="header-actions">
+      <button class="icon-btn" onclick="toggleSearch()" aria-label="검색">
+        <svg viewBox="0 0 24 24">
+          <circle cx="10.5" cy="10.5" r="6.5"/>
+          <path d="m16 16 5 5"/>
+        </svg>
+      </button>
+      <button class="icon-btn" onclick="showWishlist()" aria-label="찜 목록">
+        <svg viewBox="0 0 24 24">
+          <path d="M20.8 8.3c0 5-8.8 11-8.8 11s-8.8-6-8.8-11a4.7 4.7 0 0 1 8.8-2.1 4.7 4.7 0 0 1 8.8 2.1Z"/>
+        </svg>
+      </button>
+      <button class="icon-btn" onclick="showCart()" aria-label="장바구니">
+        <svg viewBox="0 0 24 24">
+          <path d="M5 8h14l1 13H4L5 8ZM9 9V6a3 3 0 0 1 6 0v3"/>
+        </svg>
+        <span class="count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+  <div class="search-panel" id="searchPanel">
+    <input id="searchInput" type="search"
+      placeholder="상품명을 입력하세요"
+      oninput="updateProducts()">
+  </div>
+</header>
+
+<div class="mobile-overlay" id="overlay" onclick="closeMenu()"></div>
+<aside class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴">
+  <div class="mobile-menu-head">
+    <strong>WALNORD</strong>
+    <button onclick="closeMenu()" aria-label="메뉴 닫기">×</button>
+  </div>
+  <a href="#new" onclick="closeMenu()">NEW</a>
+  <a href="#category" onclick="closeMenu()">COLLECTION</a>
+  <a href="#best" onclick="closeMenu()">BEST</a>
+  <a href="#products" onclick="closeMenu()">SHOP ALL</a>
+  <a href="#editorial" onclick="closeMenu()">ABOUT</a>
+</aside>
+
+<!-- 메인 배너: PC 1920x900 / 모바일 750x1100 -->
+<section class="hero" id="new">
+  <div class="hero-track" id="heroTrack">
+
+    <div class="hero-slide">
+      <picture>
+        <source media="(max-width:767px)" srcset="images/banner01-mobile.jpg">
+        <img src="images/banner01.jpg" alt="첫 번째 컬렉션 배너">
+      </picture>
+      <div class="hero-content">
+        <span class="eyebrow">NEW SEASON 2026</span>
+        <h1>THE NEW<br>COLLECTION</h1>
+        <p>새로운 계절, 새로운 감각을 만나다.</p>
+        <a class="light-button" href="#products">DISCOVER MORE</a>
+      </div>
+    </div>
+
+    <div class="hero-slide">
+      <picture>
+        <source media="(max-width:767px)" srcset="images/banner02-mobile.jpg">
+        <img src="images/banner02.jpg" alt="두 번째 컬렉션 배너">
+      </picture>
+      <div class="hero-content">
+        <span class="eyebrow">EVERYDAY ESSENTIALS</span>
+        <h1>YOUR DAILY<br>MOOD</h1>
+        <p>일상 속에서 발견하는 특별한 순간.</p>
+        <a class="light-button" href="#category">EXPLORE NOW</a>
+      </div>
+    </div>
+
+    <div class="hero-slide">
+      <picture>
+        <source media="(max-width:767px)" srcset="images/banner03-mobile.jpg">
+        <img src="images/banner03.jpg" alt="세 번째 컬렉션 배너">
+      </picture>
+      <div class="hero-content">
+        <span class="eyebrow">CURATED FOR YOU</span>
+        <h1>MAKE IT<br>YOURS</h1>
+        <p>당신만의 취향으로 완성하는 스타일.</p>
+        <a class="light-button" href="#best">SHOP NOW</a>
+      </div>
+    </div>
+
+  </div>
+  <div class="hero-controls">
+    <button onclick="changeSlide(-1)" aria-label="이전 배너">‹</button>
+    <span class="hero-counter" id="heroCounter">01 / 03</span>
+    <button onclick="changeSlide(1)" aria-label="다음 배너">›</button>
+  </div>
+</section>
+
+<!-- 카테고리 -->
+<section class="container" id="category">
+  <div class="section-title">
+    <small>EXPLORE OUR COLLECTION</small>
+    <h2>Shop by Category</h2>
+    <p>당신의 취향을 발견해 보세요.</p>
   </div>
 
-  <!-- HEADER -->
-  <header>
-    <div class="header-inner">
+  <div class="category-grid">
+    <a href="#products" class="category-item" onclick="selectCategory('women')">
+      <img src="images/category01.jpg" alt="여성 컬렉션" loading="lazy">
+      <div class="category-label"><strong>WOMEN</strong><span>SHOP NOW →</span></div>
+    </a>
+    <a href="#products" class="category-item" onclick="selectCategory('men')">
+      <img src="images/category02.jpg" alt="남성 컬렉션" loading="lazy">
+      <div class="category-label"><strong>MEN</strong><span>SHOP NOW →</span></div>
+    </a>
+    <a href="#products" class="category-item" onclick="selectCategory('acc')">
+      <img src="images/category03.jpg" alt="액세서리" loading="lazy">
+      <div class="category-label"><strong>ACCESSORIES</strong><span>SHOP NOW →</span></div>
+    </a>
+  </div>
+</section>
 
-      <button class="icon-btn menu-btn"
-        onclick="toggleMenu()"
-        aria-label="메뉴 열기">☰</button>
+<!-- 중간 와이드 배너 -->
+<section class="wide-banner">
+  <img src="images/wide-banner.jpg" alt="브랜드 캠페인" loading="lazy">
+  <div class="wide-content">
+    <small>WALNORD EDITION</small>
+    <h2>Everyday, Better.</h2>
+    <p>평범한 일상을 조금 더 특별하게.</p>
+    <a href="#products" class="light-button">VIEW COLLECTION</a>
+  </div>
+</section>
 
-      <a href="#" class="logo">MOOD.</a>
+<!-- 상품 -->
+<section class="container" id="products">
+  <div id="best" class="section-title">
+    <small>OUR FAVORITES</small>
+    <h2>Best Sellers</h2>
+    <p>지금 가장 사랑받는 아이템</p>
+  </div>
 
-      <nav class="nav" id="nav">
-        <a href="#new">NEW</a>
-        <a href="#category">WOMEN</a>
-        <a href="#category">MEN</a>
-        <a href="#category">LIFESTYLE</a>
-        <a href="#best">BEST</a>
-        <a href="#editorial">EDITORIAL</a>
-      </nav>
+  <div class="product-tabs">
+    <button class="active" data-category="all" onclick="filterProducts('all',this)">ALL</button>
+    <button data-category="women" onclick="filterProducts('women',this)">WOMEN</button>
+    <button data-category="men" onclick="filterProducts('men',this)">MEN</button>
+    <button data-category="acc" onclick="filterProducts('acc',this)">ACC</button>
+  </div>
 
-      <div class="header-icons">
-        <button class="icon-btn"
-          onclick="toggleSearch()"
-          aria-label="검색">⌕</button>
+  <div class="product-grid" id="productGrid"></div>
+  <a href="#products" class="section-link">VIEW ALL PRODUCTS →</a>
+</section>
 
-        <button class="icon-btn"
-          onclick="showCart()"
-          aria-label="장바구니">
-          ♧
-          <span class="cart-count" id="cartCount">0</span>
+<!-- 브랜드 스토리 -->
+<section class="editorial" id="editorial">
+  <img src="images/editorial.jpg" alt="브랜드 스토리" loading="lazy">
+  <div class="editorial-text">
+    <small>THE WALNORD STORY</small>
+    <h2>Inspired by<br>Everyday Life.</h2>
+    <p>
+      일상의 작은 순간에서 영감을 얻습니다.<br>
+      오래도록 함께할 수 있는 감각적인 스타일.<br>
+      당신의 모든 순간을 위한 컬렉션.
+    </p>
+    <a href="#new">DISCOVER OUR STORY →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">WALNORD</div>
+      <p>Everyday, Better.<br>일상에 새로운 감각을 더하다.</p>
+      <p>본 사이트는 홈페이지 디자인 시연용입니다.</p>
+    </div>
+    <div>
+      <h4>INFORMATION</h4>
+      <a href="#new">HOME</a>
+      <a href="#category">COLLECTION</a>
+      <a href="#products">SHOP</a>
+      <a href="#editorial">ABOUT</a>
+    </div>
+    <div>
+      <h4>CUSTOMER SERVICE</h4>
+      <p>고객센터 정보 입력</p>
+      <p>이메일 정보 입력</p>
+      <p>운영시간 정보 입력</p>
+    </div>
+  </div>
+  <div class="copyright">
+    © 2026 WALNORD. ALL RIGHTS RESERVED.
+  </div>
+</footer>
+
+<button class="top-btn"
+  onclick="window.scrollTo({top:0,behavior:'smooth'})"
+  aria-label="맨 위로 이동">↑</button>
+
+<script>
+/* 메인 배너 슬라이드 */
+let slideIndex=0;
+const track=document.getElementById("heroTrack");
+const totalSlides=document.querySelectorAll(".hero-slide").length;
+
+function changeSlide(direction){
+  slideIndex=(slideIndex+direction+totalSlides)%totalSlides;
+  track.style.transform=`translateX(-${slideIndex*100}%)`;
+  document.getElementById("heroCounter").textContent=
+    `${String(slideIndex+1).padStart(2,"0")} / ${String(totalSlides).padStart(2,"0")}`;
+}
+setInterval(()=>changeSlide(1),5000);
+
+/* 모바일 메뉴 */
+function openMenu(){
+  document.getElementById("mobileMenu").classList.add("open");
+  document.getElementById("overlay").classList.add("open");
+  document.body.classList.add("lock");
+}
+function closeMenu(){
+  document.getElementById("mobileMenu").classList.remove("open");
+  document.getElementById("overlay").classList.remove("open");
+  document.body.classList.remove("lock");
+}
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")closeMenu();
+});
+
+/* 검색 */
+function toggleSearch(){
+  const panel=document.getElementById("searchPanel");
+  panel.classList.toggle("open");
+  if(panel.classList.contains("open")){
+    document.getElementById("searchInput").focus();
+  }
+}
+
+/*
+상품 정보 수정 영역
+이미지: images/product01.jpg ~ product08.jpg
+가격, 상품명, 할인율 자유롭게 변경 가능
+*/
+const products=[
+  {id:1,name:"클래식 데일리 니트",category:"women",price:49000,discount:10,image:"images/product01.jpg"},
+  {id:2,name:"베이직 오버핏 셔츠",category:"men",price:39000,discount:0,image:"images/product02.jpg"},
+  {id:3,name:"미니멀 데일리 백",category:"acc",price:59000,discount:15,image:"images/product03.jpg"},
+  {id:4,name:"소프트 코튼 가디건",category:"women",price:65000,discount:20,image:"images/product04.jpg"},
+  {id:5,name:"모던 와이드 팬츠",category:"men",price:59000,discount:10,image:"images/product05.jpg"},
+  {id:6,name:"클래식 레더 슈즈",category:"acc",price:89000,discount:0,image:"images/product06.jpg"},
+  {id:7,name:"시그니처 데일리 아우터",category:"women",price:129000,discount:25,image:"images/product07.jpg"},
+  {id:8,name:"에센셜 코튼 티셔츠",category:"men",price:29000,discount:0,image:"images/product08.jpg"}
+];
+
+let currentCategory="all";
+let cart=[];
+let wishlist=[];
+
+try{
+  cart=JSON.parse(localStorage.getItem("walnord-cart")||"[]");
+  wishlist=JSON.parse(localStorage.getItem("walnord-wishlist")||"[]");
+  if(!Array.isArray(cart))cart=[];
+  if(!Array.isArray(wishlist))wishlist=[];
+}catch(e){cart=[];wishlist=[];}
+
+function saveData(){
+  try{
+    localStorage.setItem("walnord-cart",JSON.stringify(cart));
+    localStorage.setItem("walnord-wishlist",JSON.stringify(wishlist));
+  }catch(e){}
+  document.getElementById("cartCount").textContent=cart.length;
+}
+
+function renderProducts(){
+  const grid=document.getElementById("productGrid");
+  const query=document.getElementById("searchInput").value.trim().toLowerCase();
+  const filtered=products.filter(p=>
+    (currentCategory==="all"||p.category===currentCategory)&&
+    p.name.toLowerCase().includes(query)
+  );
+
+  grid.innerHTML="";
+
+  if(!filtered.length){
+    grid.innerHTML="<p>검색 결과가 없습니다.</p>";
+    return;
+  }
+
+  filtered.forEach(p=>{
+    const finalPrice=Math.round(p.price*(100-p.discount)/100/100)*100;
+    const wished=wishlist.includes(p.id);
+
+    const card=document.createElement("article");
+    card.className="product-card";
+
+    card.innerHTML=`
+      <div class="product-image">
+        <img src="${p.image}" alt="${p.name}" loading="lazy">
+        <span class="product-badge">BEST</span>
+        <button class="wish ${wished?"active":""}" aria-label="찜하기">
+          ${wished?"♥":"♡"}
         </button>
       </div>
-    </div>
-
-    <div class="search-box" id="searchBox">
-      <input type="search"
-        id="searchInput"
-        placeholder="상품명을 검색하세요"
-        oninput="searchProducts()">
-    </div>
-  </header>
-
-  <!-- HERO -->
-  <section class="hero" id="new">
-    <div class="slides" id="slides">
-
-      <div class="slide">
-        <img
-          src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1800&auto=format&fit=crop"
-          alt="패션 컬렉션">
-        <div class="slide-content">
-          <small>2026 WINTER COLLECTION</small>
-          <h1>THE NEW<br>SEASON</h1>
-          <p>일상에 자연스럽게 스며드는 새로운 스타일</p>
-          <a href="#best" class="shop-btn">SHOP NOW →</a>
+      <div class="product-detail">
+        <small>WALNORD</small>
+        <h3>${p.name}</h3>
+        <div class="price">
+          ${p.discount?`<span class="discount">${p.discount}%</span>`:""}
+          ${finalPrice.toLocaleString()}원
+          ${p.discount?`<span class="old-price">${p.price.toLocaleString()}원</span>`:""}
         </div>
+        <button class="cart-add">ADD TO CART +</button>
       </div>
+    `;
 
-      <div class="slide">
-        <img
-          src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1800&auto=format&fit=crop"
-          alt="스타일 컬렉션">
-        <div class="slide-content">
-          <small>EVERYDAY ESSENTIALS</small>
-          <h1>YOUR<br>EVERYDAY</h1>
-          <p>매일 입고 싶은 편안하고 감각적인 옷</p>
-          <a href="#category" class="shop-btn">EXPLORE →</a>
-        </div>
-      </div>
-
-      <div class="slide">
-        <img
-          src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=1800&auto=format&fit=crop"
-          alt="시즌 스타일">
-        <div class="slide-content">
-          <small>CURATED FOR YOU</small>
-          <h1>FIND YOUR<br>MOOD</h1>
-          <p>나만의 무드를 완성하는 스타일 셀렉션</p>
-          <a href="#best" class="shop-btn">DISCOVER →</a>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="slider-controls">
-      <button onclick="moveSlide(-1)" aria-label="이전 배너">‹</button>
-      <button onclick="moveSlide(1)" aria-label="다음 배너">›</button>
-    </div>
-  </section>
-
-  <!-- CATEGORY -->
-  <section class="section" id="category">
-    <div class="section-heading">
-      <div>
-        <h2>Shop by Category</h2>
-        <p>당신의 취향을 위한 카테고리</p>
-      </div>
-      <a href="#best" class="view-all">VIEW ALL →</a>
-    </div>
-
-    <div class="category-grid">
-      <a href="#best" class="category-card">
-        <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?w=700&auto=format&fit=crop" alt="여성 의류">
-        <span>WOMEN →</span>
-      </a>
-
-      <a href="#best" class="category-card">
-        <img src="https://images.unsplash.com/photo-1617127365659-c47fa864d8bc?w=700&auto=format&fit=crop" alt="남성 의류">
-        <span>MEN →</span>
-      </a>
-
-      <a href="#best" class="category-card">
-        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?w=700&auto=format&fit=crop" alt="액세서리">
-        <span>ACCESSORIES →</span>
-      </a>
-
-      <a href="#best" class="category-card">
-        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&auto=format&fit=crop" alt="컬렉션">
-        <span>COLLECTION →</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- BEST PRODUCTS -->
-  <section class="section" id="best">
-    <div class="section-heading">
-      <div>
-        <h2>Weekly Best</h2>
-        <p>이번 주 가장 사랑받는 아이템</p>
-      </div>
-      <a href="#best" class="view-all">VIEW ALL →</a>
-    </div>
-
-    <div class="filter-buttons">
-      <button class="active" onclick="filterProducts('all', this)">ALL</button>
-      <button onclick="filterProducts('women', this)">WOMEN</button>
-      <button onclick="filterProducts('men', this)">MEN</button>
-      <button onclick="filterProducts('acc', this)">ACC</button>
-    </div>
-
-    <div class="product-grid" id="productGrid"></div>
-  </section>
-
-  <!-- EDITORIAL -->
-  <section class="editorial" id="editorial">
-    <img
-      src="https://images.unsplash.com/photo-1445205170230-053b83016050?w=1200&auto=format&fit=crop"
-      alt="브랜드 에디토리얼">
-
-    <div class="editorial-content">
-      <small>MOOD EDITORIAL</small>
-      <h2>Style is<br>Everywhere.</h2>
-      <p>
-        특별한 순간뿐 아니라 평범한 하루에도.<br>
-        당신의 일상을 더욱 아름답게 만드는<br>
-        감각적인 스타일을 제안합니다.
-      </p>
-      <a href="#category">EXPLORE COLLECTION →</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-inner">
-      <div>
-        <div class="footer-logo">MOOD.</div>
-        <p>
-          Everyday Style, Everyday Mood.<br>
-          본 페이지는 반응형 쇼핑몰 디자인 예제입니다.<br>
-          © 2026 MOOD STORE. All Rights Reserved.
-        </p>
-      </div>
-
-      <div class="footer-links">
-        <a href="#new">HOME</a>
-        <a href="#category">CATEGORY</a>
-        <a href="#best">BEST</a>
-        <a href="#editorial">ABOUT</a>
-      </div>
-    </div>
-  </footer>
-
-  <script>
-    // HERO SLIDER
-    let currentSlide = 0;
-    const slides = document.querySelectorAll(".slide");
-    const slideContainer = document.getElementById("slides");
-
-    function moveSlide(direction) {
-      currentSlide =
-        (currentSlide + direction + slides.length) % slides.length;
-
-      slideContainer.style.transform =
-        `translateX(-${currentSlide * 100}%)`;
-    }
-
-    setInterval(() => moveSlide(1), 5000);
-
-    // MOBILE MENU
-    function toggleMenu() {
-      document.getElementById("nav").classList.toggle("active");
-    }
-
-    document.querySelectorAll(".nav a").forEach(link => {
-      link.addEventListener("click", () => {
-        document.getElementById("nav").classList.remove("active");
-      });
+    card.querySelector(".wish").addEventListener("click",()=>{
+      if(wishlist.includes(p.id)){
+        wishlist=wishlist.filter(id=>id!==p.id);
+      }else{
+        wishlist.push(p.id);
+      }
+      saveData();
+      renderProducts();
     });
 
-    // SEARCH
-    function toggleSearch() {
-      const box = document.getElementById("searchBox");
-      box.classList.toggle("active");
+    card.querySelector(".cart-add").addEventListener("click",()=>{
+      cart.push(p.id);
+      saveData();
+      alert("장바구니에 상품을 담았습니다.");
+    });
 
-      if (box.classList.contains("active")) {
-        document.getElementById("searchInput").focus();
-      }
-    }
+    grid.appendChild(card);
+  });
+}
 
-    // SAMPLE PRODUCTS
-    const products = [
-      {
-        name: "베이직 오버핏 니트",
-        category: "women",
-        price: 39900,
-        discount: 20,
-        image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=650&auto=format&fit=crop"
-      },
-      {
-        name: "클래식 데일리 셔츠",
-        category: "men",
-        price: 45900,
-        discount: 10,
-        image: "https://images.unsplash.com/photo-1598032895397-b9472444bf93?w=650&auto=format&fit=crop"
-      },
-      {
-        name: "모던 데일리 스니커즈",
-        category: "acc",
-        price: 59000,
-        discount: 15,
-        image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=650&auto=format&fit=crop"
-      },
-      {
-        name: "미니멀 데일리 백",
-        category: "acc",
-        price: 49000,
-        discount: 0,
-        image: "https://images.unsplash.com/photo-1547949003-9792a18a2601?w=650&auto=format&fit=crop"
-      },
-      {
-        name: "소프트 데일리 가디건",
-        category: "women",
-        price: 52900,
-        discount: 20,
-        image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=650&auto=format&fit=crop"
-      },
-      {
-        name: "베이직 코튼 티셔츠",
-        category: "men",
-        price: 29900,
-        discount: 0,
-        image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=650&auto=format&fit=crop"
-      },
-      {
-        name: "클래식 데일리 슈즈",
-        category: "acc",
-        price: 69000,
-        discount: 10,
-        image: "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=650&auto=format&fit=crop"
-      },
-      {
-        name: "시즌 컬렉션 아우터",
-        category: "women",
-        price: 89900,
-        discount: 25,
-        image: "https://images.unsplash.com/photo-1539533018447-63fcce2678e3?w=650&auto=format&fit=crop"
-      }
-    ];
+function filterProducts(category,button){
+  currentCategory=category;
+  document.querySelectorAll(".product-tabs button").forEach(btn=>{
+    btn.classList.toggle("active",btn===button);
+  });
+  renderProducts();
+}
 
-    let cart = 0;
-    let currentCategory = "all";
+function selectCategory(category){
+  const btn=document.querySelector(
+    `.product-tabs button[data-category="${category}"]`
+  );
+  if(btn)filterProducts(category,btn);
+}
 
-    function renderProducts(items) {
-      const grid = document.getElementById("productGrid");
-      grid.innerHTML = "";
+function updateProducts(){renderProducts();}
 
-      if (items.length === 0) {
-        grid.innerHTML = "<p>검색 결과가 없습니다.</p>";
-        return;
-      }
+function showCart(){
+  const total=cart.reduce((sum,id)=>{
+    const p=products.find(item=>item.id===id);
+    return sum+(p?Math.round(p.price*(100-p.discount)/100/100)*100:0);
+  },0);
+  alert(`장바구니: ${cart.length}개\n합계: ${total.toLocaleString()}원\n\n현재는 디자인 시연용입니다.`);
+}
 
-      items.forEach(product => {
-        const finalPrice = Math.round(
-          product.price * (1 - product.discount / 100) / 100
-        ) * 100;
+function showWishlist(){
+  alert(`찜한 상품: ${wishlist.length}개`);
+}
 
-        const card = document.createElement("div");
-        card.className = "product-card";
-
-        card.innerHTML = `
-          <div class="product-image">
-            <img src="${product.image}" alt="${product.name}" loading="lazy">
-            <button class="heart" aria-label="찜하기">♡</button>
-          </div>
-
-          <div class="product-info">
-            <small>MOOD STORE</small>
-            <h3>${product.name}</h3>
-            <div class="price">
-              ${product.discount > 0
-                ? `<span class="discount">${product.discount}%</span>`
-                : ""}
-              ${finalPrice.toLocaleString()}원
-            </div>
-            <button class="add-cart">장바구니 담기 +</button>
-          </div>
-        `;
-
-        card.querySelector(".heart").addEventListener("click", e => {
-          e.currentTarget.classList.toggle("active");
-          e.currentTarget.textContent =
-            e.currentTarget.classList.contains("active") ? "♥" : "♡";
-        });
-
-        card.querySelector(".add-cart").addEventListener("click", () => {
-          cart++;
-          document.getElementById("cartCount").textContent = cart;
-          alert("장바구니에 담았습니다.");
-        });
-
-        grid.appendChild(card);
-      });
-    }
-
-    function updateProducts() {
-      const query = document.getElementById("searchInput")
-        .value.trim().toLowerCase();
-
-      const filtered = products.filter(product => {
-        const categoryMatch =
-          currentCategory === "all" ||
-          product.category === currentCategory;
-
-        const searchMatch =
-          product.name.toLowerCase().includes(query);
-
-        return categoryMatch && searchMatch;
-      });
-
-      renderProducts(filtered);
-    }
-
-    function filterProducts(category, button) {
-      currentCategory = category;
-
-      document.querySelectorAll(".filter-buttons button")
-        .forEach(btn => btn.classList.remove("active"));
-
-      button.classList.add("active");
-      updateProducts();
-    }
-
-    function searchProducts() {
-      updateProducts();
-      document.getElementById("best").scrollIntoView({
-        behavior: "smooth"
-      });
-    }
-
-    function showCart() {
-      alert(`장바구니에 ${cart}개의 상품이 담겨 있습니다.`);
-    }
-
-    renderProducts(products);
-  </script>
-
+saveData();
+renderProducts();
+</script>
 </body>
 </html>
