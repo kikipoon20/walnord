@@ -370,6 +370,39 @@ footer{background:#f7f7f7;padding:75px 5% 35px}
   html{scroll-behavior:auto}
   *,*:before,*:after{transition:none!important}
 }
+
+/* PRODUCT DETAIL PAGE */
+.product-card .product-image img,.product-card .product-detail h3{cursor:pointer}
+.detail-page{display:none;max-width:1500px;margin:0 auto;padding:45px 4% 100px}
+.detail-page.active{display:block}
+.detail-back{border:0;background:none;font-size:13px;margin-bottom:35px;padding:8px 0}
+.detail-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:6%;align-items:start}
+.detail-gallery{display:grid;gap:14px}
+.detail-main-image{width:100%;aspect-ratio:3/4;object-fit:cover;background:#f5f5f5}
+.detail-info{position:sticky;top:110px}
+.detail-brand{font-size:11px;letter-spacing:2px;color:#777}
+.detail-info h1{font-size:clamp(25px,3vw,40px);margin:15px 0 20px;line-height:1.35}
+.detail-pricing{font-size:23px;font-weight:700;padding-bottom:26px;border-bottom:1px solid #ddd}
+.detail-pricing del{font-size:14px;color:#999;font-weight:400;margin-left:10px}
+.detail-description{font-size:13px;color:#666;line-height:2;margin:24px 0}
+.detail-field{margin:23px 0}
+.detail-field label{display:block;font-size:12px;font-weight:600;margin-bottom:11px}
+.detail-field select{width:100%;padding:14px;background:white;border:1px solid #ddd;border-radius:0;font-size:13px}
+.detail-quantity{display:flex;align-items:center;width:max-content;border:1px solid #ddd}
+.detail-quantity button{width:44px;height:44px;border:0;background:#fff;font-size:20px}
+.detail-quantity output{min-width:48px;text-align:center;font-size:14px}
+.detail-total{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #ddd;padding:24px 0;margin-top:25px;font-size:14px}
+.detail-total strong{font-size:23px}
+.detail-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.detail-buttons button{padding:19px 10px;border:1px solid #171717;background:#fff;font-size:12px;font-weight:700}
+.detail-buttons .primary{background:#171717;color:#fff}
+.detail-note{font-size:11px;color:#999;line-height:1.8;margin-top:17px}
+.detail-bottom{border-top:1px solid #ddd;margin-top:85px;padding-top:40px;text-align:center}
+.detail-bottom h2{font-size:25px;margin-bottom:20px}
+.detail-bottom p{font-size:13px;line-height:2.2;color:#666}
+.detail-bottom img{width:min(650px,100%);margin:35px auto;aspect-ratio:3/4;object-fit:cover}
+@media(max-width:767px){.detail-page{padding:20px 16px 65px}.detail-layout{grid-template-columns:1fr;gap:30px}.detail-info{position:static}.detail-info h1{font-size:26px}.detail-bottom{margin-top:55px}}
+
 </style>
 </head>
 
@@ -542,6 +575,28 @@ footer{background:#f7f7f7;padding:75px 5% 35px}
   <a href="#products" class="section-link">VIEW ALL PRODUCTS →</a>
 </section>
 
+
+<!-- 상품 상세페이지: 상품 클릭 시 표시 -->
+<section id="productDetailPage" class="detail-page" aria-label="상품 상세페이지">
+  <button class="detail-back" type="button" onclick="backToProducts()">← 상품 목록으로 돌아가기</button>
+  <div class="detail-layout">
+    <div class="detail-gallery"><img id="detailImage" class="detail-main-image" alt="상품 이미지"></div>
+    <div class="detail-info">
+      <span class="detail-brand">WALNORD / OFFICIAL STORE</span>
+      <h1 id="detailName"></h1>
+      <div id="detailPrice" class="detail-pricing"></div>
+      <p id="detailDescription" class="detail-description"></p>
+      <div class="detail-field"><label for="detailColor">COLOR / 색상</label><select id="detailColor"><option value="">색상을 선택하세요</option><option>아이보리</option><option>블랙</option><option>베이지</option><option>그레이</option></select></div>
+      <div class="detail-field"><label for="detailSize">SIZE / 사이즈</label><select id="detailSize"><option value="">사이즈를 선택하세요</option><option>FREE</option><option>S</option><option>M</option><option>L</option></select></div>
+      <div class="detail-field"><label>QUANTITY / 수량</label><div class="detail-quantity"><button type="button" onclick="changeDetailQuantity(-1)" aria-label="수량 감소">−</button><output id="detailQuantity">1</output><button type="button" onclick="changeDetailQuantity(1)" aria-label="수량 증가">+</button></div></div>
+      <div class="detail-total"><span>TOTAL PRICE</span><strong id="detailTotal"></strong></div>
+      <div class="detail-buttons"><button type="button" onclick="addDetailToCart()">ADD TO CART</button><button class="primary" type="button" onclick="buyDetailProduct()">BUY NOW</button></div>
+      <p class="detail-note">본 사이트는 디자인 시연용으로 실제 주문 및 결제가 진행되지 않습니다. 색상·사이즈 옵션은 예시입니다.</p>
+    </div>
+  </div>
+  <div class="detail-bottom"><h2>PRODUCT DETAILS</h2><p id="detailBottomText"></p><img id="detailBottomImage" alt="상품 상세 이미지"><p>WALNORD — Everyday, Better.<br>상품의 실제 소재, 크기 및 배송 정보는 판매 전 별도로 입력해 주세요.</p></div>
+</section>
+
 <!-- 브랜드 스토리 -->
 <section class="editorial" id="editorial">
   <img src="images/editorial.jpg" alt="브랜드 스토리" loading="lazy">
@@ -702,6 +757,12 @@ function renderProducts(){
       </div>
     `;
 
+    card.querySelector(".product-image img").addEventListener("click",()=>openProduct(p.id));
+    card.querySelector(".product-detail h3").addEventListener("click",()=>openProduct(p.id));
+    card.querySelector(".product-image img").setAttribute("tabindex","0");
+    card.querySelector(".product-image img").setAttribute("role","link");
+    card.querySelector(".product-image img").addEventListener("keydown",e=>{if(e.key==="Enter")openProduct(p.id)});
+
     card.querySelector(".wish").addEventListener("click",()=>{
       if(wishlist.includes(p.id)){
         wishlist=wishlist.filter(id=>id!==p.id);
@@ -753,6 +814,67 @@ function showWishlist(){
 
 saveData();
 renderProducts();
+
+/* 상품 상세페이지 라우팅 및 옵션 */
+let detailProduct=null;
+let detailQty=1;
+const homeSections=[...document.querySelectorAll('body > section, body > footer, body > .top-btn')].filter(el=>el.id!=="productDetailPage");
+function productPrice(p){return Math.round(p.price*(100-p.discount)/100/100)*100;}
+function openProduct(id){
+  location.hash="product/"+id;
+  renderRoute();
+}
+function renderRoute(){
+  const match=location.hash.match(/^#product\/(\d+)$/);
+  const p=match?products.find(x=>x.id===Number(match[1])):null;
+  const page=document.getElementById("productDetailPage");
+  if(!p){
+    detailProduct=null;
+    page.classList.remove("active");
+    homeSections.forEach(el=>el.style.display="");
+    return;
+  }
+  detailProduct=p;
+  detailQty=1;
+  homeSections.forEach(el=>el.style.display="none");
+  page.classList.add("active");
+  document.getElementById("detailImage").src=p.image;
+  document.getElementById("detailImage").alt=p.name;
+  document.getElementById("detailBottomImage").src=p.image;
+  document.getElementById("detailBottomImage").alt=p.name+" 상세";
+  document.getElementById("detailName").textContent=p.name;
+  document.getElementById("detailDescription").textContent=p.name+" — 일상에 자연스럽게 어우러지는 WALNORD 셀렉션. 편안함과 실용성을 고려한 데일리 아이템입니다.";
+  document.getElementById("detailBottomText").textContent=p.name+"의 디자인을 자세히 살펴보세요.";
+  document.getElementById("detailPrice").innerHTML=(p.discount?'<span class="discount">'+p.discount+'%</span> ':'')+productPrice(p).toLocaleString()+'원'+(p.discount?' <del>'+p.price.toLocaleString()+'원</del>':'');
+  document.getElementById("detailColor").value="";
+  document.getElementById("detailSize").value="";
+  updateDetailTotal();
+  window.scrollTo(0,0);
+}
+function updateDetailTotal(){
+  if(!detailProduct)return;
+  document.getElementById("detailQuantity").textContent=detailQty;
+  document.getElementById("detailTotal").textContent=(productPrice(detailProduct)*detailQty).toLocaleString()+"원";
+}
+function changeDetailQuantity(delta){detailQty=Math.max(1,Math.min(99,detailQty+delta));updateDetailTotal();}
+function backToProducts(){location.hash="best";renderRoute();setTimeout(()=>document.getElementById("best").scrollIntoView(),0);}
+function addDetailToCart(){
+  if(!detailProduct)return;
+  const color=document.getElementById("detailColor").value;
+  const size=document.getElementById("detailSize").value;
+  if(!color||!size){alert("색상과 사이즈를 선택해 주세요.");return;}
+  for(let i=0;i<detailQty;i++)cart.push(detailProduct.id);
+  saveData();
+  alert(detailProduct.name+" "+detailQty+"개를 장바구니에 담았습니다.\n선택 옵션: "+color+" / "+size);
+}
+function buyDetailProduct(){
+  if(!detailProduct)return;
+  if(!document.getElementById("detailColor").value||!document.getElementById("detailSize").value){alert("색상과 사이즈를 선택해 주세요.");return;}
+  alert("현재는 디자인 시연용 홈페이지입니다. 실제 결제 기능은 연결되어 있지 않습니다.");
+}
+window.addEventListener("hashchange",renderRoute);
+renderRoute();
+
 </script>
 </body>
 </html>
