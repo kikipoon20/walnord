@@ -50,16 +50,23 @@ header{
   font-size:29px;font-weight:700;
   letter-spacing:-1.7px;white-space:nowrap;
 }
+  /*메인상단 로고*/
   .logo img {
    width: 150px;
    height: auto;
    object-fit: contain;
    }
 
- @media (max-width: 767px) {
-    .logo img {
-     width: 120px;
-    }
+  @media (max-width: 767px) {
+     .logo img {
+      width: 120px;
+     }
+   }
+  
+  /*모바일 메뉴 로고*/
+  .mobile-logo {
+   width: 140px;
+   height: auto;
   }
   
 .nav{display:flex;gap:32px;align-items:center}
@@ -425,7 +432,7 @@ footer{background:#f7f7f7;padding:75px 5% 35px}
     </button>
 
     <a href="#" class="logo">
-    <img src="walnord-logo.png" alt="WALNORD">
+    <img src="logo.png" alt="WALNORD">
     </a>
 
     <nav class="nav">
@@ -466,7 +473,9 @@ footer{background:#f7f7f7;padding:75px 5% 35px}
 <div class="mobile-overlay" id="overlay" onclick="closeMenu()"></div>
 <aside class="mobile-menu" id="mobileMenu" aria-label="모바일 메뉴">
   <div class="mobile-menu-head">
-    <strong>WALNORD</strong>
+    <img src="logo.png"
+     alt="WALNORD"
+     class="mobile-logo">
     <button onclick="closeMenu()" aria-label="메뉴 닫기">×</button>
   </div>
   <a href="#new" onclick="closeMenu()">NEW</a>
