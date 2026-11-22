@@ -76,53 +76,40 @@ header{
   outline:none;font-size:14px;
 }
 
-/* MAIN SLIDER */
-.hero{position:relative;overflow:hidden}
-.hero-track{position:relative;min-height:400px}
-.hero-slide{position:absolute;inset:0;opacity:0;visibility:hidden;pointer-events:none;transition:opacity 1.1s ease,visibility 1.1s ease}
+/* MAIN SLIDER — 이미지 줌/페이드 + 순차 텍스트 + 하단 진행선 */
+.hero{position:relative;overflow:hidden;height:min(750px,52vw);min-height:400px;background:#171717}
+.hero-track{position:relative;height:100%}
+.hero-slide{position:absolute;inset:0;width:100%;height:100%;opacity:0;visibility:hidden;pointer-events:none;z-index:0;transition:opacity 1.2s cubic-bezier(.22,1,.36,1),visibility 1.2s}
 .hero-slide.active{opacity:1;visibility:visible;pointer-events:auto;z-index:1}
-.hero{height:min(750px,52vw);min-height:400px}
-.hero-track{height:100%}
-.hero-slide{
-  width:100%;height:100%;
-  min-height:400px;position:relative;
-}
-.hero-slide picture,.hero-slide img{display:block;width:100%;height:100%}
-.hero-slide img{object-fit:cover}
-.hero-slide:after{
-  content:"";position:absolute;inset:0;
-  background:linear-gradient(90deg,rgba(0,0,0,.42),transparent 78%);
-  pointer-events:none;
-}
-.hero-content{
-  position:absolute;left:9%;top:50%;
-  transform:translateY(-50%);z-index:2;color:#fff;
-}
-.hero-content .eyebrow{
-  font-size:12px;letter-spacing:3px;font-weight:500;
-}
-.hero-content h1{
-  font-size:clamp(42px,6.4vw,100px);
-  line-height:1.04;letter-spacing:-3px;
-  margin:23px 0;font-weight:600;
-}
+.hero-slide picture,.hero-slide picture img{display:block;width:100%;height:100%;overflow:hidden}
+.hero-slide img{object-fit:cover;transform:scale(1.1);transition:transform 6.4s cubic-bezier(.2,.65,.3,1)}
+.hero-slide.active img{transform:scale(1)}
+.hero-slide:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.42),transparent 78%);pointer-events:none}
+.hero-content{position:absolute;left:9%;top:50%;transform:translateY(-50%);z-index:2;color:#fff}
+.hero-content .eyebrow{font-size:12px;letter-spacing:3px;font-weight:500}
+.hero-content h1{font-size:clamp(42px,6.4vw,100px);line-height:1.04;letter-spacing:-3px;margin:23px 0;font-weight:600}
 .hero-content p{font-size:15px;line-height:1.8;margin-bottom:30px}
-.light-button{
-  display:inline-block;background:#fff;color:#171717;
-  padding:15px 32px;font-size:12px;font-weight:700;
-  letter-spacing:1px;
-}
-.hero-controls{
-  position:absolute;right:5%;bottom:35px;
-  z-index:5;display:flex;align-items:center;gap:16px;
-  color:#fff;
-}
-.hero-controls button{
-  border:1px solid rgba(255,255,255,.6);
-  background:transparent;color:#fff;
-  width:40px;height:40px;font-size:22px;
-}
-.hero-counter{font-size:12px;letter-spacing:2px}
+.hero-content .eyebrow,.hero-content h1,.hero-content p,.hero-content .light-button{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .9s cubic-bezier(.22,1,.36,1)}
+.hero-slide.active .hero-content .eyebrow,.hero-slide.active .hero-content h1,.hero-slide.active .hero-content p,.hero-slide.active .hero-content .light-button{opacity:1;transform:translateY(0)}
+.hero-slide.active .hero-content .eyebrow{transition-delay:.22s}
+.hero-slide.active .hero-content h1{transition-delay:.38s}
+.hero-slide.active .hero-content p{transition-delay:.58s}
+.hero-slide.active .hero-content .light-button{transition-delay:.76s}
+.light-button{display:inline-block;background:#fff;color:#171717;padding:15px 32px;font-size:12px;font-weight:700;letter-spacing:1px}
+.hero-controls{position:absolute;left:9%;right:5%;bottom:35px;z-index:5;display:flex;align-items:center;gap:18px;color:#fff}
+.hero-controls button{border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;width:40px;height:40px;font-size:22px;flex:none}
+.hero-controls button:hover{background:rgba(255,255,255,.2)}
+.hero-counter{font-size:14px;letter-spacing:2px;display:flex;align-items:center;gap:15px;min-width:0}
+.hero-counter .counter-line{width:clamp(75px,12vw,190px);height:1px;background:rgba(255,255,255,.35);position:relative;overflow:hidden}
+.hero-counter .counter-progress{position:absolute;inset:0;background:#fff;transform:scaleX(0);transform-origin:left}
+.hero-counter .counter-progress.running{animation:heroProgress 5s linear forwards}
+.hero-counter .counter-current{font-weight:700;font-variant-numeric:tabular-nums}
+.hero-counter .counter-total{opacity:.6;font-variant-numeric:tabular-nums}
+.hero-counter .counter-current.pop{animation:heroNumber .55s both}
+@keyframes heroProgress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes heroNumber{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:767px){.hero{height:580px;min-height:0}.hero-slide{min-height:0}.hero-slide:after{background:linear-gradient(transparent 30%,rgba(0,0,0,.55))}.hero-controls{left:7%;right:20px;bottom:25px;gap:10px}.hero-counter{gap:9px;font-size:12px}.hero-counter .counter-line{width:65px}.hero-controls button{width:33px;height:33px}}
+@media(prefers-reduced-motion:reduce){.hero-slide,.hero-slide img,.hero-content .eyebrow,.hero-content h1,.hero-content p,.hero-content .light-button{transition:none!important}.hero-counter .counter-progress.running{animation:none;transform:scaleX(1)}.hero-counter .counter-current.pop{animation:none}}
 
 /* GENERAL */
 .container{max-width:1600px;margin:auto;padding:100px 4%}
@@ -520,7 +507,7 @@ footer{background:#f7f7f7;padding:75px 5% 35px}
   </div>
   <div class="hero-controls">
     <button onclick="changeSlide(-1)" aria-label="이전 배너">‹</button>
-    <span class="hero-counter" id="heroCounter">01 / 03</span>
+    <span class="hero-counter" id="heroCounter" aria-live="polite"><span class="counter-current" id="heroCurrent">01</span><span class="counter-line"><span class="counter-progress" id="heroProgress"></span></span><span class="counter-total" id="heroTotal">03</span></span>
     <button onclick="changeSlide(1)" aria-label="다음 배너">›</button>
   </div>
 </section>
@@ -647,20 +634,36 @@ footer{background:#f7f7f7;padding:75px 5% 35px}
   aria-label="맨 위로 이동">↑</button>
 
 <script>
-/* 메인 배너 슬라이드 */
+/* 메인 배너: 무한 순환 / 페이드·줌 / 텍스트 순차 등장 / 진행선 */
 let slideIndex=0;
-const track=document.getElementById("heroTrack");
-const totalSlides=document.querySelectorAll(".hero-slide").length;
-
 const heroSlides=[...document.querySelectorAll(".hero-slide")];
-function changeSlide(direction){
-  heroSlides[slideIndex].classList.remove("active");
-  slideIndex=(slideIndex+direction+totalSlides)%totalSlides;
-  heroSlides[slideIndex].classList.add("active");
-  document.getElementById("heroCounter").textContent=
-    `${String(slideIndex+1).padStart(2,"0")} / ${String(totalSlides).padStart(2,"0")}`;
+const totalSlides=heroSlides.length;
+const heroCurrent=document.getElementById("heroCurrent");
+const heroTotal=document.getElementById("heroTotal");
+const heroProgress=document.getElementById("heroProgress");
+const HERO_INTERVAL=5000;
+let heroTimer;
+heroTotal.textContent=String(totalSlides).padStart(2,"0");
+function restartHeroProgress(){
+  heroProgress.classList.remove("running");
+  void heroProgress.offsetWidth;
+  heroProgress.classList.add("running");
+  heroCurrent.classList.remove("pop");
+  void heroCurrent.offsetWidth;
+  heroCurrent.classList.add("pop");
 }
-setInterval(()=>changeSlide(1),5000);
+function showHeroSlide(next){
+  heroSlides[slideIndex].classList.remove("active");
+  // 03번 다음에는 역방향 이동 없이 01번으로 즉시 순환
+  slideIndex=((next%totalSlides)+totalSlides)%totalSlides;
+  heroSlides[slideIndex].classList.add("active");
+  heroCurrent.textContent=String(slideIndex+1).padStart(2,"0");
+  restartHeroProgress();
+  clearTimeout(heroTimer);
+  heroTimer=setTimeout(()=>changeSlide(1),HERO_INTERVAL);
+}
+function changeSlide(direction){showHeroSlide(slideIndex+direction)}
+showHeroSlide(0);
 
 /* 모바일 메뉴 */
 function openMenu(){
