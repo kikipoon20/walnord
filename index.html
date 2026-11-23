@@ -799,14 +799,14 @@ function toggleSearch(){
 가격, 상품명, 할인율 자유롭게 변경 가능
 */
 const products=[
-  {id:1,name:"프리미엄 아일랜드 · 주방 리모델링",category:"INTERIOR",price:49000,discount:10,image:"product01.jpg"},
-  {id:2,name:"베이직 오버핏 셔츠",category:"FURNITURE",price:39000,discount:0,image:"product02.jpg"},
-  {id:3,name:"미니멀 데일리 백",category:"HOMEDECOR",price:59000,discount:15,image:"product03.jpg"},
-  {id:4,name:"소프트 코튼 가디건",category:"INTERIOR",price:65000,discount:20,image:"product04.jpg"},
-  {id:5,name:"모던 와이드 팬츠",category:"FURNITURE",price:59000,discount:10,image:"product05.jpg"},
-  {id:6,name:"클래식 레더 슈즈",category:"HOMEDECOR",price:89000,discount:0,image:"product06.jpg"},
-  {id:7,name:"시그니처 데일리 아우터",category:"INTERIOR",price:129000,discount:25,image:"product07.jpg"},
-  {id:8,name:"에센셜 코튼 티셔츠",category:"FURNITURE",price:29000,discount:0,image:"product08.jpg"}
+  {id:1,name:"마블 아일랜드 키친",category:"INTERIOR",price:4250000,discount:10,image:"product01.jpg"},
+  {id:2,name:"크림 부클레 라운지 소파",category:"FURNITURE",price:1370000,discount:0,image:"product02.jpg"},
+  {id:3,name:"골드 브라스 단스탠드",category:"HOMEDECOR",price:59000,discount:15,image:"product03.jpg"},
+  {id:4,name:"월넛 빌트인 책장 시공",category:"INTERIOR",price:3410000,discount:20,image:"product04.jpg"},
+  {id:5,name:"월넛·글라스 장식 수납장",category:"FURNITURE",price:810000,discount:10,image:"product05.jpg"},
+  {id:6,name:"브라스 원목 보석함",category:"HOMEDECOR",price:74000,discount:0,image:"product06.jpg"},
+  {id:7,name:"프렌치 격자 양개이중문",category:"INTERIOR",price:1580000,discount:25,image:"product07.jpg"},
+  {id:8,name:"오가닉 웨이브·원목 전신거울",category:"FURNITURE",price:489000,discount:0,image:"product08.jpg"}
 ];
 
 let currentCategory="all";
@@ -956,8 +956,8 @@ function renderRoute(){
   document.getElementById("detailBottomImage").src=p.image;
   document.getElementById("detailBottomImage").alt=p.name+" 상세";
   document.getElementById("detailName").textContent=p.name;
-  document.getElementById("detailDescription").textContent=p.name+" — 일상에 자연스럽게 어우러지는 WALNORD 셀렉션. 편안함과 실용성을 고려한 데일리 아이템입니다.";
-  document.getElementById("detailBottomText").textContent=p.name+"의 디자인을 자세히 살펴보세요.";
+  document.getElementById("detailDescription").textContent=p.name+" — 머무는 곳마다 자연스럽게 스며드는 홈 스타일링 셀렉션. 디자인의 아름다움과 실용적인 편안함을 모두 담은 공간 오브제입니다.";
+  document.getElementById("detailBottomText").textContent=p.name+"의 상을 자세히 살펴보세요.";
   document.getElementById("detailPrice").innerHTML=(p.discount?'<span class="discount">'+p.discount+'%</span> ':'')+productPrice(p).toLocaleString()+'원'+(p.discount?' <del>'+p.price.toLocaleString()+'원</del>':'');
   document.getElementById("detailColor").value="";
   document.getElementById("detailSize").value="";
