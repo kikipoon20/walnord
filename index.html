@@ -616,15 +616,15 @@ footer{background:#f7f7f7;padding:75px 5% 35px}
   </div>
 
   <div class="category-grid">
-    <a href="#products" class="category-item" onclick="selectCategory('인테리어')">
+    <a href="#products" class="category-item" onclick="selectCategory('INTERIOR')">
       <img src="category01.jpg" alt="인테리어" loading="lazy">
       <div class="category-label"><strong>INTERIOR</strong><p>인테리어</p><span>SHOP NOW →</span></div>
     </a>
-    <a href="#products" class="category-item" onclick="selectCategory('가구')">
+    <a href="#products" class="category-item" onclick="selectCategory('FURNITURE')">
       <img src="category02.jpg" alt="가구" loading="lazy">
       <div class="category-label"><strong>FURNITURE</strong><p>가구</p><span>SHOP NOW →</span></div>
     </a>
-    <a href="#products" class="category-item" onclick="selectCategory('리빙소품')">
+    <a href="#products" class="category-item" onclick="selectCategory('HOMEDECOR')">
       <img src="category03.jpg" alt="리빙소품" loading="lazy">
       <div class="category-label"><strong>HOME DECOR</strong><p>리빙 소품</p><span>SHOP NOW →</span></div>
     </a>
@@ -659,9 +659,9 @@ footer{background:#f7f7f7;padding:75px 5% 35px}
 
   <div class="product-tabs">
     <button class="active" data-category="all" onclick="filterProducts('all',this)">ALL</button>
-    <button data-category="인테리어" onclick="filterProducts('인테리어',this)">인테리어</button>
-    <button data-category="가구" onclick="filterProducts('가구',this)">가구</button>
-    <button data-category="리빙소품" onclick="filterProducts('리빙소품',this)">리빙소품</button>
+    <button data-category="INTERIOR" onclick="filterProducts('INTERIOR',this)">인테리어</button>
+    <button data-category="FURNITURE" onclick="filterProducts('FURNITURE',this)">가구</button>
+    <button data-category="HOMEDECOR" onclick="filterProducts('HOME DECOR',this)">리빙소품</button>
   </div>
 
   <div class="product-grid" id="productGrid"></div>
@@ -799,14 +799,14 @@ function toggleSearch(){
 가격, 상품명, 할인율 자유롭게 변경 가능
 */
 const products=[
-  {id:1,name:"클래식 데일리 니트",category:"women",price:49000,discount:10,image:"product01.jpg"},
-  {id:2,name:"베이직 오버핏 셔츠",category:"men",price:39000,discount:0,image:"product02.jpg"},
-  {id:3,name:"미니멀 데일리 백",category:"acc",price:59000,discount:15,image:"product03.jpg"},
-  {id:4,name:"소프트 코튼 가디건",category:"women",price:65000,discount:20,image:"product04.jpg"},
-  {id:5,name:"모던 와이드 팬츠",category:"men",price:59000,discount:10,image:"product05.jpg"},
-  {id:6,name:"클래식 레더 슈즈",category:"acc",price:89000,discount:0,image:"product06.jpg"},
-  {id:7,name:"시그니처 데일리 아우터",category:"women",price:129000,discount:25,image:"product07.jpg"},
-  {id:8,name:"에센셜 코튼 티셔츠",category:"men",price:29000,discount:0,image:"product08.jpg"}
+  {id:1,name:"클래식 데일리 니트",category:"INTERIOR",price:49000,discount:10,image:"product01.jpg"},
+  {id:2,name:"베이직 오버핏 셔츠",category:"FURNITURE",price:39000,discount:0,image:"product02.jpg"},
+  {id:3,name:"미니멀 데일리 백",category:"HOMEDECOR",price:59000,discount:15,image:"product03.jpg"},
+  {id:4,name:"소프트 코튼 가디건",category:"INTERIOR",price:65000,discount:20,image:"product04.jpg"},
+  {id:5,name:"모던 와이드 팬츠",category:"FURNITURE",price:59000,discount:10,image:"product05.jpg"},
+  {id:6,name:"클래식 레더 슈즈",category:"HOMEDECOR",price:89000,discount:0,image:"product06.jpg"},
+  {id:7,name:"시그니처 데일리 아우터",category:"INTERIOR",price:129000,discount:25,image:"product07.jpg"},
+  {id:8,name:"에센셜 코튼 티셔츠",category:"FURNITURE",price:29000,discount:0,image:"product08.jpg"}
 ];
 
 let currentCategory="all";
