@@ -229,6 +229,15 @@ header{
   content:"";position:absolute;inset:0;
   background:rgba(0,0,0,.22);pointer-events:none;
 }
+
+  /* 와이드 배너 동영상 */
+.wide-banner-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+  
 .wide-content{
   position:absolute;top:50%;left:50%;
   transform:translate(-50%,-50%);
@@ -577,7 +586,14 @@ footer{background:#f7f7f7;padding:75px 5% 35px}
 
 <!-- 중간 와이드 배너 -->
 <section class="wide-banner">
-  <img src="wide-banner.jpg" alt="브랜드 캠페인" loading="lazy">
+  <video class="wide-banner-video"
+       autoplay
+       muted
+       loop
+       playsinline>
+   <source src="wide-banner.mp4" type="video/mp4">
+  </video>
+  
   <div class="wide-content">
     <small>WALNORD EDITION</small>
     <h2>Everyday, Better.</h2>
